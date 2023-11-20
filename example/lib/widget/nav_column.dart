@@ -3,9 +3,9 @@ import 'package:photo_manager_example/widget/theme_button.dart';
 
 class NavColumn extends StatelessWidget {
   const NavColumn({
-    Key? key,
+    super.key,
     required this.children,
-  }) : super(key: key);
+  });
 
   final List<Widget> children;
 

@@ -3,9 +3,9 @@ import 'package:photo_manager/photo_manager.dart';
 
 class MoveToAnotherExample extends StatefulWidget {
   const MoveToAnotherExample({
-    Key? key,
+    super.key,
     required this.entity,
-  }) : super(key: key);
+  });
 
   final AssetEntity entity;
 

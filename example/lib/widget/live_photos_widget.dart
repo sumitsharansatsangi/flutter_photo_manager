@@ -2,16 +2,17 @@
 /// [Author] Alex (https://github.com/AlexV525)
 /// [Date] 2021/12/27 14:57
 ///
+library;
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 
 class LivePhotosWidget extends StatefulWidget {
   const LivePhotosWidget({
-    Key? key,
+    super.key,
     required this.entity,
     required this.useOrigin,
-  }) : super(key: key);
+  });
 
   final AssetEntity entity;
   final bool useOrigin;

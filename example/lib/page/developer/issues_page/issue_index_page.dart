@@ -11,8 +11,8 @@ import 'issue_962.dart';
 
 class IssuePage extends StatelessWidget {
   const IssuePage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -12,16 +12,16 @@ dependencies:
     sdk: flutter
 
   http: ^1.1.0
-  oktoast: ^3.3.2
+  oktoast: ^3.4.0
   path_provider: ^2.1.1
   photo_manager:
     path: ../
   provider: ^6.0.5
-  url_launcher: ^6.1.14
-  video_player: ^2.7.2
+  url_launcher: ^6.2.1
+  video_player: ^2.8.1
 
 dev_dependencies:
-  flutter_lints: any
+  flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
   test: any

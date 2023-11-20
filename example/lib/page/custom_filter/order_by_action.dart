@@ -23,10 +23,10 @@ Future<void> changeOrderBy(
 
 class OrderByAction extends StatelessWidget {
   const OrderByAction({
-    Key? key,
+    super.key,
     required this.items,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final List<OrderByItem> items;
   final ValueChanged<List<OrderByItem>> onChanged;
@@ -72,9 +72,9 @@ class OrderByAction extends StatelessWidget {
 
 class OrderByActionPage extends StatefulWidget {
   const OrderByActionPage({
-    Key? key,
+    super.key,
     required this.items,
-  }) : super(key: key);
+  });
 
   final List<OrderByItem> items;
 
@@ -93,9 +93,9 @@ class _OrderByActionPageState extends State<OrderByActionPage> {
     _items.addAll(widget.items);
   }
 
-  Future<bool> sureBack() {
-    if (isEdit) {
-      return showDialog(
+  void sureBack(bool value) {
+    if (value & isEdit) {
+       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Are you sure?'),
@@ -116,15 +116,13 @@ class _OrderByActionPageState extends State<OrderByActionPage> {
           ],
         ),
       ).then((value) => value == true);
-    } else {
-      return Future.value(true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: sureBack,
+    return PopScope(
+      onPopInvoked: sureBack,
       child: _buildBody(context),
     );
   }

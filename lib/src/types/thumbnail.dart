@@ -140,13 +140,13 @@ class ThumbnailOption {
 class _IOSThumbnailOption extends ThumbnailOption {
   /// Creates a new [_IOSThumbnailOption] object with the given parameters.
   const _IOSThumbnailOption({
-    required ThumbnailSize size,
-    ThumbnailFormat format = ThumbnailFormat.jpeg,
-    int quality = PMConstants.vDefaultThumbnailQuality,
+    required super.size,
+    super.format,
+    super.quality,
     required this.deliveryMode,
     required this.resizeMode,
     required this.resizeContentMode,
-  }) : super(size: size, format: format, quality: quality);
+  });
 
   /// The delivery mode for the thumbnail.
   final DeliveryMode deliveryMode;
