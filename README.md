@@ -149,7 +149,7 @@ Minimum platform versions:
 
 ##### Kotlin, Gradle, AGP
 
-We ship this plugin with **Kotlin `1.6.21`**.
+We ship this plugin with **Kotlin `1.7.22`**.
 If your projects use a lower version of Kotlin/Gradle/AGP,
 please upgrade them to a newer version.
 
@@ -158,7 +158,7 @@ More specifically:
 - Upgrade your Gradle version (`gradle-wrapper.properties`)
   to `7.5.1` or the latest version.
 - Upgrade your Kotlin version (`ext.kotlin_version`)
-  to `1.7.21` or the latest version.
+  to `1.7.22` or the latest version.
 - Upgrade your AGP version (`com.android.tools.build:gradle`)
   to `7.2.2` or the latest version.
 
@@ -430,10 +430,16 @@ when the file is downloading.
 
 #### Display assets
 
-The plugin provided the `AssetEntityImage` widget and
+Since v3.0.0, the plugin doesn't provide any UI widgets.
+`AssetEntityImage` and `AssetEntityImageProvider` are provided in the new package
+[`photo_manager_image_provider`][photo_manager_image_provider].
+
+The new plugin provided the `AssetEntityImage` widget and
 the `AssetEntityImageProvider` to display assets:
 
 ```dart
+import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
+
 final Widget image = AssetEntityImage(
   yourAssetEntity,
   isOriginal: false, // Defaults to `true`.
@@ -798,10 +804,10 @@ no matter what language has been set to devices.
 To change the default language, see the following steps:
 
 - Open your iOS project (Runner.xcworkspace) using Xcode.
-![Edit localizations in Xcode 1](https://raw.githubusercontent.com/CaiJingLong/some_asset/master/iosFlutterProjectEditinginXcode.png)
+  ![Edit localizations in Xcode 1](https://raw.githubusercontent.com/CaiJingLong/some_asset/master/iosFlutterProjectEditinginXcode.png)
 
 - Select the project "Runner" and in the localizations table, click on the + icon.
-![Edit localizations in Xcode 2](https://raw.githubusercontent.com/CaiJingLong/some_asset/master/iosFlutterAddLocalization.png)
+  ![Edit localizations in Xcode 2](https://raw.githubusercontent.com/CaiJingLong/some_asset/master/iosFlutterAddLocalization.png)
 
 - Select the adequate language(s) you want to retrieve localized strings.
 - Validate the popup screen without any modification.
@@ -918,6 +924,15 @@ for each entities' deletion, we have no way to avoid them.
 Make sure you're using the correct method,
 and your customers accept repeatedly confirmations.
 
+##### Move entities to trash
+
+```dart
+await PhotoManager.editor.android.moveToTrash(list);
+```
+
+The method support android 30 or higher. It will move the entities to trash.
+If the method is called on android 29 or lower, it will throw an exception.
+
 #### Features for iOS or macOS
 
 ##### Create a folder
@@ -991,3 +1006,4 @@ PhotoManager.editor.darwin.deletePath();
 [`LocallyAvailableBuilder`]: https://github.com/fluttercandies/flutter_wechat_assets_picker/blob/2055adfa74370339d10e6f09adef72f2130d2380/lib/src/widget/builder/locally_available_builder.dart
 
 [flutter/flutter#20522]: https://github.com/flutter/flutter/issues/20522
+[photo_manager_image_provider]: https://pub.dev/packages/photo_manager_image_provider

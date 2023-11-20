@@ -147,7 +147,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 ##### Kotlin, Gradle, AGP
 
-该插件使用 **Kotlin `1.6.21`** 来构建。
+该插件使用 **Kotlin `1.7.22`** 来构建。
 如果你的项目使用了低于此版本的 Kotlin/Gradle/AGP，请升级到大于或等于指定版本。
 
 更具体的做法:
@@ -155,7 +155,7 @@ import 'package:photo_manager/photo_manager.dart';
 - 更新你的 Gradle version (`gradle-wrapper.properties`)
   到 `7.5.1` 或者最新版本。
 - 更新你的 Kotlin version (`ext.kotlin_version`)
-  到 `1.7.21` 或者最新版本。
+  到 `1.7.22` 或者最新版本。
 - 更新你的 AGP version (`com.android.tools.build:gradle`)
   或者 `7.2.2` 或者最新版本。
 
@@ -397,9 +397,17 @@ iOS 为了节省磁盘空间，可能将资源仅保存在 iCloud 上。
 
 #### 展示资源
 
-插件提供 `AssetEntityImage` widget 和
+从 v3.0.0 开始，插件不再提供任何 UI 组件。
+`AssetEntityImage` 和 `AssetEntityImageProvider` 在
+[`photo_manager_image_provider`][photo_manager_image_provider]
+插件中提供。
+
+新的插件提供 `AssetEntityImage` widget 和
 `AssetEntityImageProvider` 来处理资源的展示：
+
 ```dart
+import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
+
 final Widget image = AssetEntityImage(
   yourAssetEntity,
   isOriginal: false,
@@ -838,6 +846,14 @@ await PhotoManager.editor.android.moveAssetToAnother(
 
 （对于 Android 30+，由于系统限制，此功能当前被屏蔽。）
 
+##### 将资源移动到废纸篓
+
+```dart
+await PhotoManager.editor.android.moveToTrash(list);
+```
+
+这个方法用于将资源移动到废纸篓，它仅支持安卓 API 30+，低于 30 的 API 会抛出异常。
+
 ##### 移除所有不存在的资源
 
 这将删除所有本地不存在的相册条目。
@@ -925,3 +941,4 @@ PhotoManager.editor.darwin.deletePath();
 [`LocallyAvailableBuilder`]: https://github.com/fluttercandies/flutter_wechat_assets_picker/blob/2055adfa74370339d10e6f09adef72f2130d2380/lib/src/widget/builder/locally_available_builder.dart
 
 [flutter/flutter#20522]: https://github.com/flutter/flutter/issues/20522
+[photo_manager_image_provider]: https://pub.flutter-io.cn/packages/photo_manager_image_provider

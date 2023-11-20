@@ -93,9 +93,12 @@ class _OrderByActionPageState extends State<OrderByActionPage> {
     _items.addAll(widget.items);
   }
 
-  void sureBack(bool value) {
-    if (value & isEdit) {
-       showDialog(
+  void sureBack(bool didPop) {
+    if (didPop) {
+      return;
+    }
+    if (isEdit) {
+      showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Are you sure?'),
@@ -103,25 +106,29 @@ class _OrderByActionPageState extends State<OrderByActionPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(false);
+                Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(true);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
               child: const Text('Sure'),
             ),
           ],
         ),
       ).then((value) => value == true);
+    } else {
+      Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
+      canPop: false,
       onPopInvoked: sureBack,
       child: _buildBody(context),
     );

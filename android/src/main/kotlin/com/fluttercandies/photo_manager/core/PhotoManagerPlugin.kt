@@ -2,6 +2,7 @@ package com.fluttercandies.photo_manager.core
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -256,12 +257,6 @@ class PhotoManagerPlugin(
                 val type = call.argument<Int>("type")!!
                 permissionsUtils.presentLimited(type, resultHandler)
             }
-
-            Methods.ignorePermissionCheck -> {
-                val ignore = call.argument<Boolean>("ignore")!!
-                ignorePermissionCheck = ignore
-                resultHandler.reply(ignore)
-            }
         }
 
     }
@@ -319,6 +314,12 @@ class PhotoManagerPlugin(
                 // The plugin will not hold instances cache on Android.
                 resultHandler.reply(1)
             }
+
+            Methods.ignorePermissionCheck -> {
+                val ignore = call.argument<Boolean>("ignore")!!
+                ignorePermissionCheck = ignore
+                resultHandler.reply(ignore)
+            }
         }
     }
 
@@ -355,6 +356,14 @@ class PhotoManagerPlugin(
                 val list =
                     photoManager.getAssetListPaged(galleryId, type, page, size, option)
                 resultHandler.reply(ConvertUtils.convertAssets(list))
+            }
+
+            Methods.getAssetCountFromPath -> {
+                val galleryId = call.getString("id")
+                val type = call.getInt("type")
+                val option = call.getOption()
+
+                photoManager.getAssetCount(resultHandler, option, type, galleryId)
             }
 
             Methods.getAssetListRange -> {
@@ -529,9 +538,36 @@ class PhotoManagerPlugin(
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                         val uris = ids.map { photoManager.getUri(it) }.toList()
                         deleteManager.deleteInApi30(uris, resultHandler)
+                    } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                        val idUriMap = HashMap<String, Uri?>()
+                        for (id in ids) {
+                            val uri = photoManager.getUri(id)
+                            idUriMap[id] = uri
+                        }
+                        deleteManager.deleteJustInApi29(idUriMap, resultHandler)
                     } else {
                         deleteManager.deleteInApi28(ids)
                         resultHandler.reply(ids)
+                    }
+                } catch (e: Exception) {
+                    LogUtils.error("deleteWithIds failed", e)
+                    resultHandler.replyError("deleteWithIds failed")
+                }
+            }
+
+            Methods.moveToTrash -> {
+                try {
+                    val ids = call.argument<List<String>>("ids")!!
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        val uris = ids.map { photoManager.getUri(it) }.toList()
+                        deleteManager.moveToTrashInApi30(uris, resultHandler)
+                    } else {
+                        LogUtils.error("The API 29 or lower have not the IS_TRASHED row in MediaStore.")
+                        resultHandler.replyError(
+                            "The api not support 29 or lower.",
+                            "",
+                            UnsupportedOperationException("The api cannot be used in 29 or lower.")
+                        )
                     }
                 } catch (e: Exception) {
                     LogUtils.error("deleteWithIds failed", e)

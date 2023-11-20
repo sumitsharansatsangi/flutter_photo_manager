@@ -4,6 +4,33 @@ that can be found in the LICENSE file. -->
 
 # CHANGELOG
 
+## 3.0.0-dev.2
+
+Fix:
+
+- Fix `PhotoManager.editor.deleteWithIds` method not working on Android API 29.
+
+## 3.0.0-dev.1
+
+***Breaking changes*** for remove some methods and classes.
+Remove next methods of class
+
+- `Editor.iOS`: use `Editor.darwin` instead.
+- `PermisstionRequestOption`: use `PermissionRequestOption` instead.
+- `AssetPathEntity.assetCount`: use `AssetPathEntity.assetCountAsync` instead.
+- Removed `AssetEntityImage` and `AssetEntityImageProvider`.
+
+Also see [Migration Guide][].
+
+## 2.8.1
+
+### Feature
+
+Fix:
+
+- Upgrade android/build.gradle to load current java version from some environment variables.
+- Fix the `setIgnorePermissionCheck` method not working on Android.
+
 ## 2.8.0
 
 ### Feature
@@ -20,6 +47,11 @@ User must follow the below methods to ensure permissions were granted:
    `PermissionState.authorized` or `PermissionState.limited`.
 2. `PhotoManager.setIgnorePermissionCheck(true)`, ignoring permission checks,
    handle permission with other mechanisms.
+
+Behavior changes to the method of the method of `PhotoManager.editor.deleteWithIds`:
+
+- The behavior changes to delete instead of moving to Trash on Android 30+. (#959)
+- Provides a new method to move resources to the Trash. (`PhotoManager.editor.android.moveToTrash`), the method only support Android 30+. (#1005)
 
 ### Fixes
 
